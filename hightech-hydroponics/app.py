@@ -1,6 +1,6 @@
 import dash
-import dash_core_components as dcc
-import dash_html_components as html
+from dash import dcc
+from dash import html
 from dash.dependencies import Input, Output
 import plotly.express as px
 import pandas as pd
@@ -26,7 +26,7 @@ colors = {
 
 app.layout = html.Div(style={'backgroundColor': colors['background']}, children=[
     html.H1(
-        children='High-Tech Hydroponics',
+        children='HighTech Hydroponics',
         style={
             'textAlign': 'center',
             'color': colors['text'],
@@ -39,16 +39,14 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
     ),
     
     
-    html.Div(style = {'display':'flex'},
+    html.Div(style = {'display':'flex', 'marginTop':'2rem','marginBottom':'4rem','paddingLeft':'150px', 'alignItems':'center'},
      children = [
             html.H4( id = 'schedule',
-                    children='Schedule', style={
-                'color': colors['text'],
-                'fontSize': '3.5rem',
-              }
+                    children='Schedule:', style={'color': '#fff','fontSize': '4.5rem'}
                 ),
             html.H4( id = 'info',
-                    children='Day 0: Germination', style={'color': colors['text'], 'fontSize':'3.5rem'})
+                    children='(Day 0) Germination', style={'color': colors['text'], 'fontSize':'3.5rem', 'paddingLeft':'3rem'}
+                )
             ]
     ),
     
@@ -56,7 +54,9 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
 ###################################################################################################
     html.Div(style={
         'display':'flex',
-        'justifyContent': 'center'
+        'justifyContent': 'space-between',
+        'marginLeft':'150px',
+        'marginRight': '150px'
     },children=[
             html.H4( id = 'temph4',
                     children='Test Temp', style={
@@ -101,7 +101,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
     ),
 ###################################################################################################
 
-    html.H3(children='Enviornmental Conditions', style={
+    html.H3(children='Enviornmental History', style={
         'textAlign': 'left',
         'color': colors['text'],
         'paddingLeft':'150px',
@@ -131,14 +131,14 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
         'paddingRight':'70px'})
 ])
 
-
+###################################### CallBacks ##################################################
 ###################################################################################################
 
 @app.callback(
     Output('graph-container', 'figure'),
     [Input('dropdown', 'value')])
 def update_Graph(value):
-    df = pd.read_csv(f'C:\\Users\\G_56\\Desktop\\projects\\hydro\sensor_data\\{value}.csv').set_index('Date')
+    df = pd.read_csv(f'C:\\Users\\G_56\\Desktop\\projects\\hightech-hydroponics\\sensor_data\\{value}.csv').set_index('Date')
     fig = px.line(df, y=df[df.columns[0]])
     fig.update_layout(
         plot_bgcolor=colors['background'],
@@ -151,7 +151,7 @@ def update_Graph(value):
     Output('temph4', 'children'),
     [Input('interval-component', 'n_intervals')])
 def update_temp(n):
-    with open('C:\\Users\\G_56\\Desktop\\projects\\hydro\sensor_data\\temp.csv','r') as f:
+    with open('C:\\Users\\G_56\\Desktop\\projects\\hightech-hydroponics\\sensor_data\\temp.csv','r') as f:
         txt = f.readlines()[-1]
         f.close()
     result = txt.split(',')
@@ -163,7 +163,7 @@ def update_temp(n):
     Output('phh4', 'children'),
     [Input('interval-component', 'n_intervals')])
 def update_ph(n):
-    with open('C:\\Users\\G_56\\Desktop\\projects\\hydro\sensor_data\\ph.csv','r') as f:
+    with open('C:\\Users\\G_56\\Desktop\\projects\\hightech-hydroponics\\sensor_data\\ph.csv','r') as f:
         txt = f.readlines()[-1]
         f.close()
     result = txt.split(',')
@@ -174,7 +174,7 @@ def update_ph(n):
     Output('co2h4', 'children'),
     [Input('interval-component', 'n_intervals')])
 def update_co2(n):
-    with open('C:\\Users\\G_56\\Desktop\\projects\\hydro\sensor_data\\co2.csv','r') as f:
+    with open('C:\\Users\\G_56\\Desktop\\projects\\hightech-hydroponics\\sensor_data\\co2.csv','r') as f:
         txt = f.readlines()[-1]
         f.close()
     result = txt.split(',')
